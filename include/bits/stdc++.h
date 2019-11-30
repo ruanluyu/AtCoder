@@ -1,7 +1,6 @@
-
 // C++ includes used for precompiling -*- C++ -*-
 
-// Copyright (C) 2003-2015 Free Software Foundation, Inc.
+// Copyright (C) 2003-2013 Free Software Foundation, Inc.
 //
 // This file is part of the GNU ISO C++ Library.  This library is free
 // software; you can redistribute it and/or modify it under the
@@ -28,7 +27,7 @@
  */
 
 // 17.4.1.2 Headers
-#include "pch.h"
+
 // C
 #ifndef _GLIBCXX_NO_ASSERT
 #include <cassert>
@@ -53,7 +52,6 @@
 #include <ccomplex>
 #include <cfenv>
 #include <cinttypes>
-#include <cstdalign>
 #include <cstdbool>
 #include <cstdint>
 #include <ctgmath>
