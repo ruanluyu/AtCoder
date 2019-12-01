@@ -1,5 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
+#define DEBUG
 #define REP(i,n) for(long long i=0;i<n;i++)
 #define REP1(i,n) for(long long i=1;i<=n;i++)
 #define REP2D(i,j,h,w) for(long long i=0;i<h;i++) for(long long j=0;j<w;j++)
@@ -19,12 +20,8 @@ using namespace std;
 #define PRT(a) cout<<a<<endl;
 #ifdef DEBUG
 #define DBPRT(a) cout << "[Debug] - " << #a << " : " << a << endl
-#define DBSTART if(1){
-#define DBEND }
 #else
 #define DBPRT(a) do{}while(0)
-#define DBSTART if(0){
-#define DBEND }
 #endif
 #define PRTLST(arr,num) REP(_i,num) cout<<_i<<" - "<<arr[_i]<<endl;
 #define PRTLST2(arr2,d1,d2) REP(_i,d1) REP(_j,d2) cout<<_i<<","<<_j<<" : "<<arr2[_i][_j]<<endl;

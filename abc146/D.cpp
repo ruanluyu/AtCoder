@@ -1,5 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
+#define DEBUG
 #define REP(i,n) for(long long i=0;i<n;i++)
 #define REP1(i,n) for(long long i=1;i<=n;i++)
 #define REP2D(i,j,h,w) for(long long i=0;i<h;i++) for(long long j=0;j<w;j++)
@@ -26,6 +27,7 @@ using namespace std;
 #define DBSTART if(0){
 #define DBEND }
 #endif
+
 #define PRTLST(arr,num) REP(_i,num) cout<<_i<<" - "<<arr[_i]<<endl;
 #define PRTLST2(arr2,d1,d2) REP(_i,d1) REP(_j,d2) cout<<_i<<","<<_j<<" : "<<arr2[_i][_j]<<endl;
 #define PRTLST2D(arr2,d1,d2) do{cout<<"L\t";REP(_i,d2) cout<<_i<<"\t"; cout<<endl; REP(_i,d1){cout<<_i<<"\t";REP(_j,d2){cout<<arr2[_i][_j]<<"\t";}cout<<endl;}}while(0);
@@ -59,11 +61,30 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 100000
+#define MAXN 200005
 //---------------------
 
-
+ll n,k;
+ll arr[MAXN];
+ll res;
+    
 int main(){
+    cin >> n >> k;
+    REP(i,n) cin>>arr[i];
+    res = 0 ;
+    ll sum[MAXN];
+    sum[0] = arr[0] % k;
+    REP1(i,n-1) sum[i] = (sum[i-1] + arr[i])%k;
+    DBSTART
+    PRTLST(sum,n);
+    DBEND
+    map<ll,ll> ct;
 
+    REP(i,n){
+    	ll c = ( sum[i] - i + k) % k;
+    	res += ct[c];
+    	ct[c] ++ ;
+    } 
+    PRT(res);
 	return 0;
 }
