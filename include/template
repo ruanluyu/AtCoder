@@ -16,7 +16,7 @@ using namespace std;
 #define YNPRT(b) cout<<((b)?"Yes":"No")<<endl
 #define ENTER printf("\n")
 #define REV(arr) reverse(ALL(arr))
-#define PRT(a) cout<<a<<endl;
+#define PRT(a) cout<<a<<endl
 #ifdef DEBUG
 #define DBPRT(a) cout << "[Debug] - " << #a << " : " << a << endl
 #define DBSTART if(1){

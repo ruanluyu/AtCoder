@@ -26,7 +26,6 @@ using namespace std;
 #define DBSTART if(0){
 #define DBEND }
 #endif
-
 #define PRTLST(arr,num) REP(_i,num) cout<<_i<<" - "<<arr[_i]<<endl;
 #define PRTLST2(arr2,d1,d2) REP(_i,d1) REP(_j,d2) cout<<_i<<","<<_j<<" : "<<arr2[_i][_j]<<endl;
 #define PRTLST2D(arr2,d1,d2) do{cout<<"L\t";REP(_i,d2) cout<<_i<<"\t"; cout<<endl; REP(_i,d1){cout<<_i<<"\t";REP(_j,d2){cout<<arr2[_i][_j]<<"\t";}cout<<endl;}}while(0);
@@ -34,7 +33,7 @@ using namespace std;
 #define TOSUM(arr,sum,n) {sum[0]=arr[0];REP1(i,n-1) sum[i]=sum[i-1]+arr[i];}
 
 #define MIN(target,v1) (target)=min(target,v1)
-#define MAX(target,v1) (target)=max(target,v1)
+#define MAX(target,v1) (target)=max(target,v1) 
 #define P1 first
 #define P2 second
 #define PB push_back
@@ -60,40 +59,41 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 200005
+#define MAXN 30005
 //---------------------
 
-ll n,k;
-ll arr[MAXN];
-ll res;
-    
+ll n;
+string s;
+bool dp1[10];
+bool dp2[10][10];
+bool dp3[10][10][10];
+#define TONUM(c) (ll)((c)-'0')
 int main(){
-    cin >> n >> k;
-    REP1(i,n) cin>>arr[i];
-    res = 0 ;
-    ll sum[MAXN];
-    sum[0] = 0;
-    REP1(i,n) sum[i] = (sum[i-1] + arr[i])%k;
-    DBSTART
-    PRTLST(sum,n);
-    DBEND
-
-    ll v[MAXN];
-    REP(i,n+1) v[i] = ( sum[i]%k - i%k + k ) % k;
-
-    DBSTART
-    PRTLST(v,n);
-    DBEND
-
-    map<ll,ll> ct;
-
-    REP(i,n+1){
-        ll l = i-k;
-        if(l >= 0) ct[v[l]]--;
-        res += ct[v[i]];
-        ct[v[i]]++;
-    }
-    
-    PRT(res);
-    return 0;
+	cin >> n;
+	cin >> s;
+	ZERO(dp1);ZERO(dp2);ZERO(dp3);
+	dp1[TONUM(s[0])] = true;
+	dp1[TONUM(s[1])] = true;
+	dp2[TONUM(s[0])][TONUM(s[1])] = true;
+	REP(i,n){
+		if(i<=1) continue;
+		ll thisnum = TONUM(s[i]);
+		DBPRT(thisnum);
+		REP(j,10) REP(k,10){
+			if(dp2[j][k]) dp3[j][k][thisnum] = true;
+		}
+		REP(j,10){
+			if(dp1[j]) dp2[j][thisnum] = true;
+		}
+		dp1[thisnum] = true;
+	}
+	ll c = 0;
+	REP(i,10) REP(j,10) REP(k,10) if(dp3[i][j][k]) {c++;DBPRT(i);DBPRT(j);DBPRT(k);}
+	PRT(c);
+	return 0;
 }
+
+
+
+
+

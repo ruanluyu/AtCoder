@@ -16,7 +16,7 @@ using namespace std;
 #define YNPRT(b) cout<<((b)?"Yes":"No")<<endl
 #define ENTER printf("\n")
 #define REV(arr) reverse(ALL(arr))
-#define PRT(a) cout<<a<<endl;
+#define PRT(a) cout<<a<<endl
 #ifdef DEBUG
 #define DBPRT(a) cout << "[Debug] - " << #a << " : " << a << endl
 #define DBSTART if(1){
@@ -26,7 +26,6 @@ using namespace std;
 #define DBSTART if(0){
 #define DBEND }
 #endif
-
 #define PRTLST(arr,num) REP(_i,num) cout<<_i<<" - "<<arr[_i]<<endl;
 #define PRTLST2(arr2,d1,d2) REP(_i,d1) REP(_j,d2) cout<<_i<<","<<_j<<" : "<<arr2[_i][_j]<<endl;
 #define PRTLST2D(arr2,d1,d2) do{cout<<"L\t";REP(_i,d2) cout<<_i<<"\t"; cout<<endl; REP(_i,d1){cout<<_i<<"\t";REP(_j,d2){cout<<arr2[_i][_j]<<"\t";}cout<<endl;}}while(0);
@@ -34,7 +33,7 @@ using namespace std;
 #define TOSUM(arr,sum,n) {sum[0]=arr[0];REP1(i,n-1) sum[i]=sum[i-1]+arr[i];}
 
 #define MIN(target,v1) (target)=min(target,v1)
-#define MAX(target,v1) (target)=max(target,v1)
+#define MAX(target,v1) (target)=max(target,v1) 
 #define P1 first
 #define P2 second
 #define PB push_back
@@ -60,40 +59,30 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 200005
+#define MAXN 100005
 //---------------------
 
-ll n,k;
-ll arr[MAXN];
-ll res;
-    
+ll x ;
+ll mn[6];
+bool dp[6][MAXN];
 int main(){
-    cin >> n >> k;
-    REP1(i,n) cin>>arr[i];
-    res = 0 ;
-    ll sum[MAXN];
-    sum[0] = 0;
-    REP1(i,n) sum[i] = (sum[i-1] + arr[i])%k;
-    DBSTART
-    PRTLST(sum,n);
-    DBEND
-
-    ll v[MAXN];
-    REP(i,n+1) v[i] = ( sum[i]%k - i%k + k ) % k;
-
-    DBSTART
-    PRTLST(v,n);
-    DBEND
-
-    map<ll,ll> ct;
-
-    REP(i,n+1){
-        ll l = i-k;
-        if(l >= 0) ct[v[l]]--;
-        res += ct[v[i]];
-        ct[v[i]]++;
-    }
-    
-    PRT(res);
-    return 0;
+	cin >> x;
+	REP(i,6) mn[i] = 100 + i;
+	ZERO(dp);
+	REP(i,x+1) dp[0][i] = (i%mn[0] == 0);
+	REP(i,6) dp[i][0] = true;
+	REP1(i,5) REP1(j,x) {
+		if(j-mn[i]>=0) dp[i][j] = dp[i-1][j] || dp[i][j-mn[i]];
+		else dp[i][j] = dp[i-1][j];
+	}
+	if(dp[5][x]) PRT(1);
+	else PRT(0);
+	return 0;
 }
+
+
+
+
+
+
+
