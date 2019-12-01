@@ -34,7 +34,7 @@ using namespace std;
 #define TOSUM(arr,sum,n) {sum[0]=arr[0];REP1(i,n-1) sum[i]=sum[i-1]+arr[i];}
 
 #define MIN(target,v1) (target)=min(target,v1)
-#define MAX(target,v1) (target)=max(target,v1) 
+#define MAX(target,v1) (target)=max(target,v1)
 #define P1 first
 #define P2 second
 #define PB push_back
@@ -80,10 +80,10 @@ int main(){
     map<ll,ll> ct;
 
     REP(i,n){
-    	ll c = ( sum[i] - i + k) % k;
-    	res += ct[c];
-    	ct[c] ++ ;
-    } 
+        ll c = ( sum[i] - i + k) % k;
+        res += ct[c];
+        ct[c] ++ ;
+    }
     PRT(res);
-	return 0;
+    return 0;
 }
