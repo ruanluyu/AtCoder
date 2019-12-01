@@ -16,7 +16,7 @@ using namespace std;
 #define YNPRT(b) cout<<((b)?"Yes":"No")<<endl
 #define ENTER printf("\n")
 #define REV(arr) reverse(ALL(arr))
-#define PRT(a) cout<<a<<endl;
+#define PRT(a) cout<<a<<endl
 #ifdef DEBUG
 #define DBPRT(a) cout << "[Debug] - " << #a << " : " << a << endl
 #define DBSTART if(1){
@@ -62,8 +62,32 @@ ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t
 #define MAXN 100000
 //---------------------
 
+ll t1,t2,a1,a2,b1,b2,d1,d2;
 
 int main(){
-
+	cin >> t1 >> t2 >> a1 >> a2 >> b1 >> b2;
+	d1 = (a1 - b1)*t1;
+	d2 = (a2 - b2)*t2;
+	DBPRT(d1);DBPRT(d2);
+	if((d1>0&&d2>0) || (d1<0 && d2<0)) PRT("0");
+	else{
+		if(d1 == -d2) PRT("infinity");
+		else{
+			if(d1<0) {d1 = -d1;d2 = -d2;}
+			if(-d2<d1) PRT(0);
+			else{
+				ll st = d1 - (d1 + d2 + d1);
+				ll res = 0;
+				if(d1 % st == 0) res = d1/st*2;
+				else res = (d1/st+1) * 2 - 1;
+				PRT(res);
+			}
+		}
+	}
 	return 0;
 }
+
+
+
+
+

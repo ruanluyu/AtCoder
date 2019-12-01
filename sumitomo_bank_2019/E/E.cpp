@@ -59,11 +59,47 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 100000
+#define MAXN 100005
+#define MOD 1000000007
 //---------------------
 
 
+ll n;
+ll a[MAXN];
+ll mem[MAXN*3];
+ll c[MAXN];
+
 int main(){
+	
+	ZERO(a);ZERO(mem);ZERO(c);
+	cin >> n;
+	REP1(i,n) cin >> a[i];
+
+	REP1(i,n){memcpy(&mem[3*i],&mem[3*(i-1)],3*sizeof(ll)); REP(j,3) if(mem[(i-1)*3+j] == a[i]) {mem[(i)*3+j]++;break;}}
+
+	DBSTART
+	PRTLST(mem,(n+1)*3);
+	DBEND
+
+	REP1(i,n) {
+		ll ct = 0;
+		REP(j,3) if( mem[(i-1)*3+j]== a[i] ) ct++;
+		DBPRT(i);
+		DBPRT(ct);
+		c[i] = ct;
+	}
+	ll res = 1;
+	REP1(i,n) res = ((res%MOD) * (c[i]%MOD))%MOD;
+
+	PRT(res);
 
 	return 0;
 }
+
+
+
+
+
+
+
+
