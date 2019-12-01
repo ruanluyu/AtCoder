@@ -1,6 +1,5 @@
 #include<bits/stdc++.h>
 using namespace std;
-#define DEBUG
 #define REP(i,n) for(long long i=0;i<n;i++)
 #define REP1(i,n) for(long long i=1;i<=n;i++)
 #define REP2D(i,j,h,w) for(long long i=0;i<h;i++) for(long long j=0;j<w;j++)

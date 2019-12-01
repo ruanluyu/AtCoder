@@ -19,7 +19,7 @@ int main(int argc, char ** args){
         sprintf(buffer,"%s/%c_Release.command",foldername,'A'+i);
         FILE *fp = fopen(buffer, "w");
         
-        fprintf(fp,"echo =============Release-start=============\ncd `dirname $0`\ng++ %c.cpp -I../include/ -std=c++11 -O2 -o %c \nchmod u+x %c\n./%c\necho =============Release- end =============\n",'A'+i,'A'+i,'A'+i,'A'+i);
+        fprintf(fp,"echo =============Release-start=============\ncd `dirname $0`\ng++ %c.cpp -I../include/ -std=c++11 -O2 -o %c_Release \nchmod u+x %c_Release\n./%c_Release\necho =============Release- end =============\n",'A'+i,'A'+i,'A'+i,'A'+i);
         
         fclose(fp);
         chmod(buffer,0777);
@@ -28,7 +28,7 @@ int main(int argc, char ** args){
         sprintf(buffer,"%s/%c_Debug.command",foldername,'A'+i);
         fp = fopen(buffer, "w");
         
-        fprintf(fp,"echo =============Debug-start=============\ncd `dirname $0`\ng++ %c.cpp -I../include/ -DDEBUG -std=c++11 -O2 -o %c \nchmod u+x %c\n./%c\necho =============Debug- end =============\n",'A'+i,'A'+i,'A'+i,'A'+i);
+        fprintf(fp,"echo =============Debug-start=============\ncd `dirname $0`\ng++ %c.cpp -I../include/ -DDEBUG -std=c++11 -O2 -o %c_Debug \nchmod u+x %c_Debug\n./%c_Debug\necho =============Debug- end =============\n",'A'+i,'A'+i,'A'+i,'A'+i);
         
         fclose(fp);
         chmod(buffer,0777);
