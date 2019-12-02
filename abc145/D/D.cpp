@@ -1,16 +1,16 @@
 #include<bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(long long i=0;i<(n);i++)
-#define REP1(i,n) for(long long i=1;i<=(n);i++)
-#define REP2D(i,j,h,w) for(long long i=0;i<(h);i++) for(long long j=0;j<(w);j++)
-#define REP2D1(i,j,h,w) for(long long i=1;i<=(h);i++) for(long long j=1;j<=(w);j++)
+#define REP(i,n) for(long long i=0;i<n;i++)
+#define REP1(i,n) for(long long i=1;i<=n;i++)
+#define REP2D(i,j,h,w) for(long long i=0;i<h;i++) for(long long j=0;j<w;j++)
+#define REP2D1(i,j,h,w) for(long long i=1;i<=h;i++) for(long long j=1;j<=w;j++)
 #define PER(i,n) for(long long i=((n)-1);i>=0;i--)
 #define PER1(i,n) for(long long i=(n);i>0;i--)
 #define FOR(i,a,b) for(long long i=(a);i<(b);i++)
 #define FORE(i,a,b) for(long long i=(a);i<=(b);i++)
 #define ITE(arr) for(auto ite=(arr).begin();ite!=(arr).end();++ite)
-#define ALL(a) ((a).begin()),((a).end())
-#define RANGE(a) (a),((a)+sizeof(a))
+#define ALL(a) (a.begin()),(a.end())
+#define RANGE(a) (a),(a+sizeof(a))
 #define ZERO(a) memset(a,0,sizeof(a))
 #define MINUS(a) memset(a,0xff,sizeof(a))
 #define YNPRT(b) cout<<((b)?"Yes":"No")<<endl
@@ -18,7 +18,7 @@ using namespace std;
 #define REV(arr) reverse(ALL(arr))
 #define PRT(a) cout<<(a)<<endl
 #ifdef DEBUG
-#define DBPRT(a) cout << "[Debug] - " << #a << " : " << (a) << endl
+#define DBPRT(a) cout << "[Debug] - " << #a << " : " << a << endl
 #define DBSTART if(1){
 #define DBEND }
 #else
@@ -59,12 +59,94 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 100000
+#define MOD 1000000007
+#define MAXN 1000005
 //---------------------
+ll inv[MAXN];
+ll fac[MAXN];
+ll facinv[MAXN];
 
 
+ll modpow(ll a, ll b){
+  	if(b==-1) return inv[a];
+  	if(b<-1) {
+  		a=inv[a%MOD];
+  		b*=-1;
+  	}
+	if(b==0) return 1;
+	if(b==1) return a%MOD;
+	ll ret=modpow(a%MOD,b>>1)%MOD;
+	return (ret*ret%MOD)*((b%2)?(a%MOD):1)%MOD;
+}
+
+ll fermat(ll a){
+  	if(a%MOD) return -1;
+	return modpow(a,MOD-2);
+}
+
+inline ll modmult(ll a, ll b){
+	return (a%MOD)*(b%MOD)%MOD;
+}
+
+inline ll modmult(ll a, ll b ,ll c){
+	return (a%MOD)*(b%MOD)%MOD*(c%MOD)%MOD;
+}
+
+
+inline ll modfact(ll n){
+	if(n==0 || n==1) return 1;
+	if(n>=MOD) return 0;
+	return fac[n];
+}
+
+inline ll modcomb(ll m, ll n){
+  	if(m>=MOD || n>=MOD || n<0 || m<0) return -1;
+  	if(n==0||n==m) return 1;
+  	  	if(m<n) return 0;
+	return fac[m]*facinv[m-n]%MOD*facinv[n]%MOD;
+}
+      
+void makelist(){
+  	inv[0]=-1;
+  	inv[1]=1;
+	for(ll i=2;i<MAXN;i++) inv[i]=(MOD-MOD/i)*inv[MOD%i]%MOD;
+	fac[0]=1;
+	REP1(i,MAXN) fac[i]=(fac[i-1]*i)%MOD;
+	facinv[MAXN-1] = modpow(fac[MAXN-1],MOD-2);
+	PER(i,MAXN-1) facinv[i]=(facinv[i+1]*(i+1))%MOD;
+}
+
+
+void makepowlist(ll *list,ll a,ll num){
+	list[0]=1;
+	REP1(i,num-1){
+		list[i] = modmult(list[i-1],a);
+	}
+}
+
+
+void makepowinvlist(ll *list, ll a,ll num){
+	list[0]=1;
+	REP1(i,num-1){
+		list[i] = modmult(list[i-1],inv[a]);
+	}
+}
+
+ll x,y;
 int main(){
 
+	cin >> x >> y;
+	ll nx = (2*x-y);
+	ll ny = (2*y-x);
+	if(nx<0 || ny<0 || (nx%3!=0) || (ny%3!=0))
+	{
+		PRT(0);
+	}else{
+		makelist();
+		nx /= 3;ny/=3;
+		PRT(modcomb(nx+ny,min(nx,ny)));
+	}
+	
 	return 0;
 }
 

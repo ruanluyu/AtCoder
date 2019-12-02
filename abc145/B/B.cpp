@@ -62,9 +62,20 @@ ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t
 #define MAXN 100000
 //---------------------
 
+ll n;
+string s;
 
 int main(){
-
+	cin >> n >> s;
+	bool res = false;
+	DBPRT(s);
+	if(n%2==0){
+		res = true;
+		REP(i,n>>1){
+			if(s[i]!=s[i+n/2]) {res = false; break;}
+		}
+	}
+	YNPRT(res);
 	return 0;
 }
 

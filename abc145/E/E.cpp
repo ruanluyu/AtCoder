@@ -1,16 +1,16 @@
 #include<bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(long long i=0;i<(n);i++)
-#define REP1(i,n) for(long long i=1;i<=(n);i++)
-#define REP2D(i,j,h,w) for(long long i=0;i<(h);i++) for(long long j=0;j<(w);j++)
-#define REP2D1(i,j,h,w) for(long long i=1;i<=(h);i++) for(long long j=1;j<=(w);j++)
+#define REP(i,n) for(long long i=0;i<n;i++)
+#define REP1(i,n) for(long long i=1;i<=n;i++)
+#define REP2D(i,j,h,w) for(long long i=0;i<h;i++) for(long long j=0;j<w;j++)
+#define REP2D1(i,j,h,w) for(long long i=1;i<=h;i++) for(long long j=1;j<=w;j++)
 #define PER(i,n) for(long long i=((n)-1);i>=0;i--)
 #define PER1(i,n) for(long long i=(n);i>0;i--)
 #define FOR(i,a,b) for(long long i=(a);i<(b);i++)
 #define FORE(i,a,b) for(long long i=(a);i<=(b);i++)
 #define ITE(arr) for(auto ite=(arr).begin();ite!=(arr).end();++ite)
-#define ALL(a) ((a).begin()),((a).end())
-#define RANGE(a) (a),((a)+sizeof(a))
+#define ALL(a) (a.begin()),(a.end())
+#define RANGE(a) (a),(a+sizeof(a))
 #define ZERO(a) memset(a,0,sizeof(a))
 #define MINUS(a) memset(a,0xff,sizeof(a))
 #define YNPRT(b) cout<<((b)?"Yes":"No")<<endl
@@ -18,7 +18,7 @@ using namespace std;
 #define REV(arr) reverse(ALL(arr))
 #define PRT(a) cout<<(a)<<endl
 #ifdef DEBUG
-#define DBPRT(a) cout << "[Debug] - " << #a << " : " << (a) << endl
+#define DBPRT(a) cout << "[Debug] - " << #a << " : " << a << endl
 #define DBSTART if(1){
 #define DBEND }
 #else
@@ -59,12 +59,42 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 100000
+#define MAXN 3005
 //---------------------
 
+ll n,t,a[MAXN],b[MAXN];
+ll dp1[MAXN][MAXN];
+ll dp2[MAXN][MAXN];
 
 int main(){
+	cin >> n >> t;
+	ZERO(a);ZERO(b);
+	ZERO(dp1);ZERO(dp2);
+	REP1(i,n) cin >> a[i] >> b[i];
 
+
+	REP1(i,n) REP(j,t) {dp1[i][j] = dp1[i-1][j]; if(j-a[i]>=0) dp1[i][j] = max(dp1[i-1][j-a[i]]+b[i],dp1[i-1][j]);}
+	PER1(i,n) REP(j,t) {dp2[i][j] = dp2[i+1][j]; if(j-a[i]>=0) dp2[i][j] = max(dp2[i+1][j-a[i]]+b[i],dp2[i+1][j]);}
+
+
+	DBSTART
+	PRTLST2(dp1,n+1,t);
+	PRTLST2(dp2,n+1,t);
+	DBEND
+
+	ll res = 0;
+	REP1(i,n) 
+	{
+		ll cures = 0;
+		REP(j,t){
+			cures = max(cures, dp1[i-1][j] + dp2[i+1][t-1-j]);
+		}
+		DBPRT(cures);
+		DBPRT(b[i]);
+		res = max(res,cures+b[i]);
+	}
+	
+	PRT(res);
 	return 0;
 }
 

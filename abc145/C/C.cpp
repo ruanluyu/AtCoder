@@ -1,16 +1,16 @@
 #include<bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(long long i=0;i<(n);i++)
-#define REP1(i,n) for(long long i=1;i<=(n);i++)
-#define REP2D(i,j,h,w) for(long long i=0;i<(h);i++) for(long long j=0;j<(w);j++)
-#define REP2D1(i,j,h,w) for(long long i=1;i<=(h);i++) for(long long j=1;j<=(w);j++)
+#define REP(i,n) for(long long i=0;i<n;i++)
+#define REP1(i,n) for(long long i=1;i<=n;i++)
+#define REP2D(i,j,h,w) for(long long i=0;i<h;i++) for(long long j=0;j<w;j++)
+#define REP2D1(i,j,h,w) for(long long i=1;i<=h;i++) for(long long j=1;j<=w;j++)
 #define PER(i,n) for(long long i=((n)-1);i>=0;i--)
 #define PER1(i,n) for(long long i=(n);i>0;i--)
 #define FOR(i,a,b) for(long long i=(a);i<(b);i++)
 #define FORE(i,a,b) for(long long i=(a);i<=(b);i++)
 #define ITE(arr) for(auto ite=(arr).begin();ite!=(arr).end();++ite)
-#define ALL(a) ((a).begin()),((a).end())
-#define RANGE(a) (a),((a)+sizeof(a))
+#define ALL(a) (a.begin()),(a.end())
+#define RANGE(a) (a),(a+sizeof(a))
 #define ZERO(a) memset(a,0,sizeof(a))
 #define MINUS(a) memset(a,0xff,sizeof(a))
 #define YNPRT(b) cout<<((b)?"Yes":"No")<<endl
@@ -18,7 +18,7 @@ using namespace std;
 #define REV(arr) reverse(ALL(arr))
 #define PRT(a) cout<<(a)<<endl
 #ifdef DEBUG
-#define DBPRT(a) cout << "[Debug] - " << #a << " : " << (a) << endl
+#define DBPRT(a) cout << "[Debug] - " << #a << " : " << a << endl
 #define DBSTART if(1){
 #define DBEND }
 #else
@@ -59,12 +59,40 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 100000
+#define MAXN 100
 //---------------------
 
+ll n;
+ll x[MAXN],y[MAXN];
+double distlist[MAXN][MAXN];
+
+double dist(ll x1, ll y1, ll x2, ll y2)
+{
+	return sqrt(double( (x1-x2)*(x1-x2)+(y1-y2)*(y1-y2) ));
+}
 
 int main(){
-
+	ZERO(x);ZERO(y);ZERO(distlist);
+	cin >> n;
+	REP1(i,n) cin >> x[i] >> y[i];
+	REP2D1(i,j,n,n) distlist[i][j] = dist(x[i],y[i],x[j],y[j]);
+	vector<ll> order;
+	REP1(i,n) order.PB(i);
+	double sum = 0;
+	do
+	{
+		double localSum = 0;
+		DBPRT(order);
+		REP1(i,n-1)
+		{
+			localSum += distlist[order[i-1]][order[i]];
+		}
+		DBPRT(localSum);
+		sum += localSum;
+	} while (next_permutation(ALL(order)));
+	ll qn = 1;
+	REP1(i,n) qn *= i;
+	printf("%.10f\n",sum/qn);
 	return 0;
 }
 
