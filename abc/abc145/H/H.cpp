@@ -59,12 +59,32 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 100000
+#define MAXN 305
+#define INF (INF_LL >> 10ll)
 //---------------------
-
-
+ll n,k;
+ll h[MAXN];
+ll dp[MAXN][MAXN];
 int main(){
-
+    cin >> n >> k;
+    REP1(i,n) cin >> h[i];
+    h[0] = 0;
+    REP(i,MAXN) REP(j,MAXN) dp[i][j] = INF;
+    dp[0][0] = 0;
+    
+    REP1(i,n) REP1(j,i) REP(m,i){
+    DBPRT(m);
+    DBPRT((j-1));
+        dp[i][j] = min(dp[i][j],dp[m][j-1]+max(0ll,h[i]-h[m]));
+    }
+    
+    DBSTART
+    PRTLST2(dp,n+1,n-k+1);
+    DBEND
+    
+    ll res = INF;
+    REP1(i,n) res = min(res,dp[i][n-k]);
+    PRT(res);
 	return 0;
 }
 
