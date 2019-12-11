@@ -48,16 +48,16 @@ int main(int argc, char ** args){
         system(ss.str().c_str());
         
         ss.str("");
-        ss <<foldername<<"/"<<curfolder<<"/"<<curfolder<<"_Release.command";
+        ss <<foldername<<"/"<<curfolder<<"/Release_"<<curfolder<<".command";
         string curpath = ss.str();
         FILE *fp = fopen(curpath.c_str(), "w");
         
         ss.str("");
         ss << "echo =============Release-start============="<<endl
         <<"cd `dirname $0`"<<endl
-        <<"g++ "<<curfolder<<".cpp -I../../include/ -std=c++11 -O2 -o "<<curfolder<<"_Release "<<endl
-        <<"chmod u+x "<<curfolder<<"_Release"<<endl
-        <<"./"<<curfolder<<"_Release"<<endl
+        <<"g++ "<<curfolder<<".cpp -I../../include/ -std=c++11 -O2 -o Release_"<<curfolder<<endl
+        <<"chmod u+x Release_"<<curfolder<<endl
+        <<"./Release_"<<curfolder<<endl
         <<"echo =============Release- end ============="<<endl;
         
         fprintf(fp,"%s",ss.str().c_str());
@@ -66,16 +66,16 @@ int main(int argc, char ** args){
         chmod(curpath.c_str(),0777);
         
         ss.str("");
-        ss <<foldername<<"/"<<curfolder<<"/"<<curfolder<<"_Debug.command";
+        ss <<foldername<<"/"<<curfolder<<"/Debug_"<<curfolder<<".command";
         curpath = ss.str();
         fp = fopen(curpath.c_str(), "w");
         
         ss.str("");
         ss << "echo =============Debug-start============="<<endl
         <<"cd `dirname $0`"<<endl
-        <<"g++ "<<curfolder<<".cpp -I../../include/ -DDEBUG -std=c++11 -O2 -o "<<curfolder<<"_Debug"<<endl
-        <<"chmod u+x "<<curfolder<<"_Debug"<<endl
-        <<"./"<<curfolder<<"_Debug"<<endl
+        <<"g++ "<<curfolder<<".cpp -I../../include/ -DDEBUG -std=c++11 -O2 -o Debug_"<<curfolder<<endl
+        <<"chmod u+x Debug_"<<curfolder<<endl
+        <<"./Debug_"<<curfolder<<endl
         <<"echo =============Debug- end ============="<<endl;
         
         fprintf(fp,"%s",ss.str().c_str());
