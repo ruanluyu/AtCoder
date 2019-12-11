@@ -115,48 +115,33 @@ int main(){
 
 	
 	ZERO(sum);
-	TOSUM(b,sum,(id+2));
+	TOSUM(b,sum,(n+1));
+
+	DBSTART
+	DBPRT("sum");
+	PRTLST(sum,n+1);
+	ENTER;
+	DBEND
+
 	ll f[MAXN+1];
 	ZERO(f);
-	REP1(i,id+1){
+	REP1(i,n){
 		f[i] = (ll)( ((double)sum[i]) / i );
 	}
 
+	
+
+	ZERO(ans);
+	f[0] = n;
+
 	DBSTART
 	DBPRT("f");
-	PRTLST(f,id+2);
-	ENTER;
-	DBPRT("sum");
-	PRTLST(sum,id+2);
-	ENTER;
+	PRTLST(f,n+1);
 	DBEND
 
-
-
-	
-	ZERO(ans);
-	REP1(i,id+1){
-		ans[f[i]] = max(ans[f[i]],i);
+	REP(i,n+1){
+		FORE(j,f[i+1]+1,f[i]) ans[j] = i;
 	}
-
-	DBSTART
-	DBPRT("ans");
-	PRTLST(ans,id+2);
-	ENTER;
-	DBEND
-
-	lastn = 0;
-	PER1(i,id+1){
-		if(ans[id] != 0) lastn = ans[id];
-		else ans[id] = lastn;
-	}
-
-	DBSTART
-	DBPRT("ans");
-	PRTLST(ans,id+2);
-	ENTER;
-	DBEND
-	
 	REP1(i,n) PRT(ans[i]);
 
 	return 0;

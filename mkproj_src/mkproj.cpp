@@ -2,36 +2,87 @@
 #include<sys/stat.h>
 #include<cstdio>
 #include<cstdlib>
+#include<queue>
+#include<string>
+#include<sstream>
 using namespace std;
 int main(int argc, char ** args){
-    char foldername[255];
-    printf("Input the project name >> ");
-    scanf("%s",foldername);
-    mkdir(foldername,0777);
+    string foldername;
     char buffer[255];
-    char commandBuffer[1024];
+    char commandBuffer[2048];
+    queue<string> folderlst;
     
-    for (int i = 0; i<10; i++) {
+    if(argc<2){
+        cout << "Input the project name >> ";
+        cin >> foldername;
+    }
+    else{
+        foldername = args[1];
+        if(argc>2){
+            for(int i = 2;i<argc;i++){
+                folderlst.push(args[i]);
+            }
+        }
+    }
+    
+    if(folderlst.empty())
+        for (int i = 0; i<10; i++) {
+            string curs;
+            curs.push_back('A'+i);
+            folderlst.push(curs);
+        }
+    
+    
+    mkdir(foldername.c_str(),0777);
+    while (!folderlst.empty()) {
         
-        sprintf(buffer,"cd `dirname $0`\ncd %s\nmkdir %c\ncd ..\ncp include/template %s/%c/%c.cpp",foldername,'A'+i,foldername,'A'+i,'A'+i);
-        system(buffer);
+        stringstream ss;
+        string curfolder = folderlst.front();
         
-        sprintf(buffer,"%s/%c/%c_Release.command",foldername,'A'+i,'A'+i);
-        FILE *fp = fopen(buffer, "w");
+        ss << "cd `dirname $0`" << endl
+        <<"cd "<< foldername << endl
+        <<"mkdir "<< curfolder <<endl
+        <<"cd .."<<endl
+        <<"cp include/template "<<foldername<<"/"<<curfolder<<"/"<<curfolder<<".cpp";
         
-        fprintf(fp,"echo =============Release-start=============\ncd `dirname $0`\ng++ %c.cpp -I../../include/ -std=c++11 -O2 -o %c_Release \nchmod u+x %c_Release\n./%c_Release\necho =============Release- end =============\n",'A'+i,'A'+i,'A'+i,'A'+i);
+        system(ss.str().c_str());
+        
+        ss.str("");
+        ss <<foldername<<"/"<<curfolder<<"/"<<curfolder<<"_Release.command";
+        string curpath = ss.str();
+        FILE *fp = fopen(curpath.c_str(), "w");
+        
+        ss.str("");
+        ss << "echo =============Release-start============="<<endl
+        <<"cd `dirname $0`"<<endl
+        <<"g++ "<<curfolder<<".cpp -I../../include/ -std=c++11 -O2 -o "<<curfolder<<"_Release "<<endl
+        <<"chmod u+x "<<curfolder<<"_Release"<<endl
+        <<"./"<<curfolder<<"_Release"<<endl
+        <<"echo =============Release- end ============="<<endl;
+        
+        fprintf(fp,"%s",ss.str().c_str());
         
         fclose(fp);
-        chmod(buffer,0777);
+        chmod(curpath.c_str(),0777);
         
+        ss.str("");
+        ss <<foldername<<"/"<<curfolder<<"/"<<curfolder<<"_Debug.command";
+        curpath = ss.str();
+        fp = fopen(curpath.c_str(), "w");
         
-        sprintf(buffer,"%s/%c/%c_Debug.command",foldername,'A'+i,'A'+i);
-        fp = fopen(buffer, "w");
+        ss.str("");
+        ss << "echo =============Debug-start============="<<endl
+        <<"cd `dirname $0`"<<endl
+        <<"g++ "<<curfolder<<".cpp -I../../include/ -DDEBUG -std=c++11 -O2 -o "<<curfolder<<"_Debug"<<endl
+        <<"chmod u+x "<<curfolder<<"_Debug"<<endl
+        <<"./"<<curfolder<<"_Debug"<<endl
+        <<"echo =============Debug- end ============="<<endl;
         
-        fprintf(fp,"echo =============Debug-start=============\ncd `dirname $0`\ng++ %c.cpp -I../../include/ -DDEBUG -std=c++11 -O2 -o %c_Debug \nchmod u+x %c_Debug\n./%c_Debug\necho =============Debug- end =============\n",'A'+i,'A'+i,'A'+i,'A'+i);
+        fprintf(fp,"%s",ss.str().c_str());
         
         fclose(fp);
-        chmod(buffer,0777);
+        chmod(curpath.c_str(),0777);
+        folderlst.pop();
     }
     
     return 0;

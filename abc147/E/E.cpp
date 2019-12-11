@@ -59,12 +59,37 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 100000
+#define MAXN 85
+#define MAXP 25600
 //---------------------
 
+ll h ,w;
+ll data[MAXN][MAXN];
+bool dp[MAXP][MAXN][MAXN];
 
 int main(){
-
+	cin >> h>>w;
+	ZERO(data);
+	REP2D1(i,j,h,w) cin >> data[i][j];
+	REP2D1(i,j,h,w) {ll a; cin >> a; data[i][j] = abs(data[i][j]-a);}
+	ZERO(dp);
+	dp[80+data[1][1]][1][1] = true;
+	dp[80-data[1][1]][1][1] = true;
+	REP2D1(i,j,h,w) REP(k,MAXP)
+		{
+			if(i==h&&j==w) break; 
+			if(dp[k][i][j]){
+				dp[k+80+data[i+1][j]][i+1][j] = true;
+				dp[k+80-data[i+1][j]][i+1][j] = true;
+				dp[k+80+data[i][j+1]][i][j+1] = true;
+				dp[k+80-data[i][j+1]][i][j+1] = true;
+			}
+		}
+	ll res = 25601;
+	REP(i,MAXP) {
+		if(dp[i][h][w]) res = min(res,abs(i-80*(h+w-1)));
+	}
+	PRT(res);
 	return 0;
 }
 
