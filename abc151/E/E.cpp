@@ -62,29 +62,103 @@ ostream& operator<<(ostream& os,const set<T>& v) {os<<" { ";ITE(v) {os<<*ite;if(
 template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
-//---------------------
-#define MAXN 500005
-//---------------------
 
-string s;
-int a[MAXN],b[MAXN];
 
-int main(){
-	cin >> s;
-	ZERO(a);ZERO(b);
-	s = '_'+s;
-	REP1(i,s.size()){
-		if(s[i] == '<') a[i] = a[i-1]+1;
-	}
-	PER1(i,s.size()){
-		if(s[i] == '>') b[i-1] = b[i]+1;
-	}
-	ll sum = 0;
-	REP(i,s.size()) sum += max(a[i],b[i]);
-	PRT(sum);
-	return 0;
+//---------------------
+#define MOD 1000000007
+#define MAXN 100005
+//---------------------
+ll inv[MAXN];
+ll fac[MAXN];
+ll facinv[MAXN];
+
+
+ll modpow(ll a, ll b){
+  	if(b==-1) return inv[a];
+  	if(b<-1) {
+  		a=inv[a%MOD];
+  		b*=-1;
+  	}
+	if(b==0) return 1;
+	if(b==1) return a%MOD;
+	ll ret=modpow(a%MOD,b>>1)%MOD;
+	return (ret*ret%MOD)*((b%2)?(a%MOD):1)%MOD;
 }
 
+ll fermat(ll a){
+  	if(a%MOD) return -1;
+	return modpow(a,MOD-2);
+}
+
+inline ll modmult(ll a, ll b){
+	return (a%MOD)*(b%MOD)%MOD;
+}
+
+inline ll modmult(ll a, ll b ,ll c){
+	return (a%MOD)*(b%MOD)%MOD*(c%MOD)%MOD;
+}
+
+
+inline ll modfact(ll n){
+	if(n==0 || n==1) return 1;
+	if(n>=MOD) return 0;
+	return fac[n];
+}
+
+inline ll modcomb(ll m, ll n){
+  	if(m>=MOD || n>=MOD || n<0 || m<0) return -1;
+  	if(n==0||n==m) return 1;
+  	  	if(m<n) return 0;
+	return fac[m]*facinv[m-n]%MOD*facinv[n]%MOD;
+}
+      
+void makelist(){
+  	inv[0]=-1;
+  	inv[1]=1;
+	for(ll i=2;i<MAXN;i++) inv[i]=(MOD-MOD/i)*inv[MOD%i]%MOD;
+	fac[0]=1;
+	REP1(i,MAXN) fac[i]=(fac[i-1]*i)%MOD;
+	facinv[MAXN-1] = modpow(fac[MAXN-1],MOD-2);
+	PER(i,MAXN-1) facinv[i]=(facinv[i+1]*(i+1))%MOD;
+}
+
+
+void makepowlist(ll *list,ll a,ll num){
+	list[0]=1;
+	REP1(i,num-1){
+		list[i] = modmult(list[i-1],a);
+	}
+}
+
+
+void makepowinvlist(ll *list, ll a,ll num){
+	list[0]=1;
+	REP1(i,num-1){
+		list[i] = modmult(list[i-1],inv[a]);
+	}
+}
+
+ll n,k;
+ll a[MAXN];
+
+int main(){
+  	makelist();
+  	cin >> n >> k;
+  	REP1(i,n) cin >> a[i];
+  	sort(a+1,a+1+n);
+  	ll res = 0;
+  	if(k==1){
+  		res = 0;
+  	}
+  	else{
+  		ll smax=0; ll smin=0;
+  		FORE(i,k,n) smax = (smax + (modcomb(i-1,k-1)*a[i])%MOD)%MOD;
+  		FORE(i,1,n-k+1) smin = (smin + (modcomb(n-i,k-1)*a[i])%MOD)%MOD;
+  		res = (smax - smin + MOD)%MOD;
+  	}
+	PRT(res);
+	return 0;
+}
 
 
 

@@ -63,11 +63,47 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 100000
+#define MAXN 100005
+#define INF 1000000007
 //---------------------
-
+ll n;
+ll l[MAXN],r[MAXN];
+vector<pll> arr;
 
 int main(){
+
+	cin >> n;
+	REP(i,n) cin >> l[i] >> r[i];
+
+	ll res = 0;
+
+	ll lmax = 0;
+	//ll lmin = INF;
+	ll rmin = INF;
+	//ll rmax = 0;
+	ll nmax = 0;
+	REP(i,n) {
+		lmax = max(lmax,l[i]); //lmin = min(lmin,l[i]);
+		rmin = min(rmin,r[i]); //rmax = max(lmax,r[i]);
+		nmax = max(nmax,r[i]-l[i]+1);
+	}
+
+	res = max(rmin-lmax+1,0ll) + nmax;
+
+	REP(i,n){
+		arr.PB(pll(max(r[i]-lmax+1,0ll),max(rmin-l[i]+1,0ll)));
+	}
+
+	sort(ALL(arr));
+
+	ll minb = INF;
+	REP(i,n-1){
+		ll a = arr[i+1].P1, b = arr[i].P2;
+		minb = min(minb,b);
+		res = max(res,a+minb);
+	}
+
+	PRT(res);
 
 	return 0;
 }

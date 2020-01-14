@@ -63,25 +63,68 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 500005
+#define MAXN 100005
 //---------------------
 
-string s;
-int a[MAXN],b[MAXN];
+ll n , u,v;
+vector<ll> T[MAXN];
+bool searched[MAXN];
+bool foundmark[MAXN];
+ll dist[MAXN];
 
 int main(){
-	cin >> s;
-	ZERO(a);ZERO(b);
-	s = '_'+s;
-	REP1(i,s.size()){
-		if(s[i] == '<') a[i] = a[i-1]+1;
+	cin >> n>>u>>v;
+	ZERO(searched);
+	ZERO(foundmark);
+	ZERO(dist);
+
+	REP1(i,n-1){
+		ll a,b;
+		cin >> a >> b;
+		T[a].PB(b); T[b].PB(a);
 	}
-	PER1(i,s.size()){
-		if(s[i] == '>') b[i-1] = b[i]+1;
+	REP1(i,n) 
+	DBPRT(T[i]);
+
+	DBPRT("A");
+	queue<ll> bfs;
+	bool marked = false;
+	bfs.push(v);
+	searched[v] = true;
+	ll maxdist = 0;
+	ll tardist = 0;
+	while(!bfs.empty()){
+		DBPRT("A");
+		ll id = bfs.front();
+		bfs.pop();
+		DBPRT(id);
+		ITE(T[id]){
+			DBPRT("B");
+			DBPRT(*ite);
+			if(searched[*ite]) continue;
+			DBPRT("C");
+			if(marked && !foundmark[id]) break;
+			DBPRT("D");
+			if(marked) {foundmark[*ite] = true;}
+			DBPRT("E");
+			searched[*ite] = true;
+			dist[*ite] = dist[id]+1;
+			DBPRT(dist[*ite]);
+			if(*ite == u){
+				tardist = dist[*ite];
+				DBPRT("Enter");
+				marked = true;
+				foundmark[*ite] = true;
+
+			}
+			if(marked){MAX(maxdist,dist[*ite]);}
+			bfs.push(*ite);
+		}
 	}
-	ll sum = 0;
-	REP(i,s.size()) sum += max(a[i],b[i]);
-	PRT(sum);
+
+	PRT(maxdist-1); PRT(tardist);
+
+
 	return 0;
 }
 

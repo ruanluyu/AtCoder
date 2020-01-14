@@ -63,25 +63,22 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 500005
+#define MAXN 200005
 //---------------------
 
+ll n,k;
 string s;
-int a[MAXN],b[MAXN];
 
 int main(){
-	cin >> s;
-	ZERO(a);ZERO(b);
-	s = '_'+s;
-	REP1(i,s.size()){
-		if(s[i] == '<') a[i] = a[i-1]+1;
+	cin >> n >> k >> s;
+	string ss =s;
+	FOR(i,k,n) ss[i] = s[i%k];
+	if(ss<s){
+		ll l = k-1;
+		while(ss[l]=='9') ss[l--]='0';
+		ss[l]++;
 	}
-	PER1(i,s.size()){
-		if(s[i] == '>') b[i-1] = b[i]+1;
-	}
-	ll sum = 0;
-	REP(i,s.size()) sum += max(a[i],b[i]);
-	PRT(sum);
+	PRT(n); REP(i,n) printf("%c",ss[i%k]); ENTER;
 	return 0;
 }
 

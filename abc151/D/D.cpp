@@ -63,25 +63,46 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 500005
+#define MAXN 25
 //---------------------
 
-string s;
-int a[MAXN],b[MAXN];
+int w,h;
+string s[MAXN];
+int searched[MAXN][MAXN];
+
+int find_t(int a1,int a2, int b1, int b2){
+	MINUS(searched);
+	searched[a1][a2] = 0;
+	if(searched[b1][b2]>=0) return 0;
+	queue<pii> q;
+	q.push(pii(a1,a2));
+	while(!q.empty()){
+		pii curp = q.front();
+		q.pop();
+		REP(i,4){
+			int na1 = curp.P1 + Move[i][0];
+			int na2 = curp.P2 + Move[i][1];
+			if(na1<1 || na2 < 1 || na1 >h || na2 > w || s[na1][na2] == '#' || searched[na1][na2]>=0) continue;
+			else searched[na1][na2] = searched[curp.P1][curp.P2]+1;
+			q.push(pii(na1,na2));
+			DBPRT(na1);DBPRT(na2);
+		}
+	}
+	return searched[b1][b2];
+}
 
 int main(){
-	cin >> s;
-	ZERO(a);ZERO(b);
-	s = '_'+s;
-	REP1(i,s.size()){
-		if(s[i] == '<') a[i] = a[i-1]+1;
+	cin >> h >> w;
+	REP1(i,h) {s[i].PB('_');string cur;cin >> cur; s[i]+=cur;}
+	REP1(i,h) DBPRT(s[i]);
+	int res = 0;
+	REP2D1(i,j,h,w) REP2D1(k,l,h,w) if((i==k && j==l)||s[i][j]=='#'||s[k][l]=='#') continue; else{
+		int curcal = find_t(i,j,k,l);
+		if(curcal<0) continue;
+		MAX(res,curcal);
+		DBPRT(curcal);
 	}
-	PER1(i,s.size()){
-		if(s[i] == '>') b[i-1] = b[i]+1;
-	}
-	ll sum = 0;
-	REP(i,s.size()) sum += max(a[i],b[i]);
-	PRT(sum);
+	PRT(res);
 	return 0;
 }
 

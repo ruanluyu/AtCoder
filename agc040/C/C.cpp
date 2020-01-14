@@ -64,11 +64,14 @@ ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t
 
 //---------------------
 #define MAXN 100000
+#define MOD 998244353
 //---------------------
+
+ll n;
 
 
 int main(){
-
+	cin >> n;
 	return 0;
 }
 

@@ -63,25 +63,45 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 500005
+#define MAXN 305
 //---------------------
 
-string s;
-int a[MAXN],b[MAXN];
+// J
+
+ll n;
+ll a[MAXN];
+double rc[MAXN];
+double dp[MAXN][MAXN][MAXN];
+
+
+double solve(int r1,int r2, int r3){
+	if(dp[r1][r2][r3]>=0) return dp[r1][r2][r3];
+	double c =0;
+	ll n1 = r2-r1;
+	ll n2 = r3-r2;
+	ll n3 = n-r3;
+	if(n3>0) c+=solve(r1,r2,r3+1)*n3;
+	if(n2>0) c+=solve(r1,r2+1,r3)*n2;
+	if(n1>0) c+=solve(r1+1,r2,r3)*n1;
+	c += n;
+	c /= n1+n2+n3;
+	return dp[r1][r2][r3] = c;
+}
 
 int main(){
-	cin >> s;
-	ZERO(a);ZERO(b);
-	s = '_'+s;
-	REP1(i,s.size()){
-		if(s[i] == '<') a[i] = a[i-1]+1;
-	}
-	PER1(i,s.size()){
-		if(s[i] == '>') b[i-1] = b[i]+1;
-	}
-	ll sum = 0;
-	REP(i,s.size()) sum += max(a[i],b[i]);
-	PRT(sum);
+	cin >> n;
+	REP(i,n) cin >> a[i];
+	MINUS(dp);
+	sort(a,a+n);
+	ll id1,id2,id3;
+	id1 = lower_bound(a,a+n,1) - a;
+	id2 = lower_bound(a,a+n,2) - a;
+	id3 = lower_bound(a,a+n,3) - a;
+	PRTLST(a,n);
+	DBPRT(id1);DBPRT(id2);DBPRT(id3);
+	dp[n-1][n][n] = n;
+
+	printf("%.14f\n",solve(id1,id2,id3));
 	return 0;
 }
 

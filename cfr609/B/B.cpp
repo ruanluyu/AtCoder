@@ -63,24 +63,47 @@ template<typename T1,typename T2>
 ostream& operator<<(ostream& os,const map<T1,T2>& m) {ITE(m) {os<<ite->P1<<"\t\t|->\t\t"<<ite->P2<<endl;} return os;}
 
 //---------------------
-#define MAXN 500005
+#define MAXN 2005
 //---------------------
 
-string s;
-int a[MAXN],b[MAXN];
+ll n,m,a[MAXN],b[MAXN];
+
 
 int main(){
-	cin >> s;
-	ZERO(a);ZERO(b);
-	s = '_'+s;
-	REP1(i,s.size()){
-		if(s[i] == '<') a[i] = a[i-1]+1;
+	cin >> n >> m;
+	REP(i,n) cin >> a[i];
+	REP(i,n) cin >> b[i];
+	sort(a,a+n); sort(b,b+n);
+
+
+	PRTLST(a,n);PRTLST(b,n);
+
+	deque<ll> qa,qb;
+	REP(i,n){
+		qa.PB(a[i]);
+		qb.PB(b[i]);
 	}
-	PER1(i,s.size()){
-		if(s[i] == '>') b[i-1] = b[i]+1;
-	}
+
 	ll sum = 0;
-	REP(i,s.size()) sum += max(a[i],b[i]);
+
+	REP(i,m){
+		if(qa != qb){
+			ll cura = qa.back();
+			ll curb = qb.back();
+			if(cura>=curb){
+				ll ct = 0;
+				while(qa.size() && qa.back() == cura) {qa.pop_back();ct++;}
+				ITE(qa) (*ite)+=m-cura;
+				REP(j,ct)qa.push_front(0);
+				sum+=m-cura;
+			}else{
+				ll ct = 0;
+				ITE(qa) (*ite)+=curb-cura;
+				sum+=curb-cura;
+			}
+		}
+			else break;
+	}
 	PRT(sum);
 	return 0;
 }
