@@ -1,0 +1,42 @@
+//---------------------
+#define MAXN 100005
+#define MAXUF 100005
+typedef ll uf_val;
+//---------------------
+uf_val uf_par[MAXUF];
+ll uf_rank[MAXUF];
+
+void uf_init(){ // Initialize Union-find set
+	REP(i,MAXUF){
+		uf_par[i]=uf_val(i);
+		uf_rank[i]=1;
+	}
+}
+
+uf_val uf_find(const uf_val& a){ // Find parent
+	return (uf_par[a]==a)?(a):(uf_par[a]=uf_find(uf_par[a])); // Compress path
+}
+
+void uf_unite(const uf_val& a, const uf_val& b){
+	auto x = uf_find(a), y = uf_find(b);
+	if(x==y) return;
+	if (uf_rank[x]<uf_rank[y]) {uf_par[x]=y; uf_rank[y]+=uf_rank[x];}
+	else {uf_par[y]=x; uf_rank[x]+=uf_rank[y];}
+}
+
+bool uf_same(const uf_val& a,const uf_val& b){
+	return uf_find(a) == uf_find(b);
+}
+
+int main(){
+
+  	uf_init();
+
+	uf_unite(1,3);
+  	uf_unite(3,7);
+  	uf_unite(5,8);
+
+  	REP(i,MAXUF) cout<<i<<" root : "<<uf_find(i)<<endl;
+
+	return 0;
+}
