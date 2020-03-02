@@ -4,7 +4,7 @@
 
 [CodeForces](https://codeforces.com/profile/ruanluyu)
 
-# Usage of ./m
+# Usage of ./m (Mac OS only)
 
 ```cmd
 ./m Folder_name [subfolder_name1 subfolder_name2 ...]
